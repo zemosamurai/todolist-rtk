@@ -1,18 +1,18 @@
-import React from "react";
+import React, {memo, useCallback} from "react";
 import {Task} from "./Task/Task";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import Button from '@mui/material/Button';
-import { Delete } from '@mui/icons-material'
-import  IconButton  from '@mui/material/IconButton'
-import {FilterValueType} from "../todolistSlice";
-import {TaskStateType, TaskType} from "../taskSlice";
+import {Delete} from '@mui/icons-material'
+import IconButton from '@mui/material/IconButton'
+import {FilterValueType} from "../../../reducers/todolistSlice";
+import {TaskType} from "../../../reducers/taskSlice";
 
 type TodolistPropsType = {
     todoId: string
     title: string
     filter: FilterValueType
-    tasks: TaskStateType
+    tasks: TaskType[]
     removeTask: (todoId: string, taskId: string) => void
     addTask: (todoId: string, title: string) => void
     changeTaskStatus: (todoId: string, taskId: string, isDone: boolean) => void
@@ -22,23 +22,22 @@ type TodolistPropsType = {
     changeTodolistTitle: (todoId: string, title: string) => void
 }
 
-export const Todolist = (props: TodolistPropsType) => {
+export const Todolist = memo((props: TodolistPropsType) => {
     const {
         todoId, title, filter, tasks, removeTask, addTask, changeTaskStatus,
         changeTaskTitle, changeFiler, removeTodoList, changeTodolistTitle
     } = props
 
-    const onAddTask = (title: string) => addTask(todoId, title)
+    const onAddTask = useCallback((title: string) => addTask(todoId, title), [addTask, todoId])
     const onFilterAll = () => changeFiler(todoId, 'all')
     const onFilterActive = () => changeFiler(todoId, 'active')
     const onFilterCompleted = () => changeFiler(todoId, 'completed')
     const onRemoveTodoList = () => removeTodoList(todoId)
-    const onChangeTodolistTitle = (title: string) => {
+    const onChangeTodolistTitle = useCallback((title: string) => {
         changeTodolistTitle(todoId, title)
-    }
+    },[changeTodolistTitle, todoId])
 
-    let taskFromTodo = tasks[todoId]
-
+    let taskFromTodo = tasks
     if (filter === 'active') {
         taskFromTodo = taskFromTodo.filter(tl => !tl.isDone)
     }
@@ -68,17 +67,20 @@ export const Todolist = (props: TodolistPropsType) => {
                 })}
             </ul>
             <div>
+
                 <Button
                     onClick={onFilterAll}
                     variant={filter === 'all' ? 'contained' : 'outlined'}
                     size={'small'}
                 >All</Button>
+
                 <Button
                     onClick={onFilterActive}
                     variant={filter === 'active' ? 'contained' : 'outlined'}
                     color={'warning'}
                     size={'small'}
                 >Active</Button>
+
                 <Button
                     onClick={onFilterCompleted}
                     variant={filter === 'completed' ? 'contained' : 'outlined'}
@@ -88,4 +90,4 @@ export const Todolist = (props: TodolistPropsType) => {
             </div>
         </div>
     )
-}
+})
