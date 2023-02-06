@@ -1,20 +1,93 @@
-import {taskSlice, TaskStateType} from "../reducers/taskSlice";
+import {taskSlice, TaskStateType} from "../store/reducers/taskSlice";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
-const {addTask, removeTask, changeTaskStatus, changeTaskTitle} = taskSlice.actions
+const {addTask, removeTask, updateTask} = taskSlice.actions
 
 let startState: { tasks: TaskStateType }
 beforeEach(() => {
     startState = {
         tasks: {
             ['todolistId1']: [
-                {id: '1', title: 'CSS', isDone: false},
-                {id: '2', title: 'JS', isDone: true},
-                {id: '3', title: 'React', isDone: false}
+                {
+                    id: '1',
+                    title: 'CSS',
+                    status: TaskStatuses.New,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: false,
+                    order: 0,
+                    addedDate: ''
+                },
+                {
+                    id: '2',
+                    title: 'JS',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: true,
+                    order: 0,
+                    addedDate: ''
+                },
+                {
+                    id: '3',
+                    title: 'React',
+                    status: TaskStatuses.New,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: false,
+                    order: 0,
+                    addedDate: ''
+                }
             ],
             ['todolistId2']: [
-                {id: '1', title: 'bread', isDone: false},
-                {id: '2', title: 'milk', isDone: true},
-                {id: '3', title: 'tea', isDone: false}
+                {
+                    id: '1',
+                    title: 'bread',
+                    status: TaskStatuses.New,
+                    todoListId: 'todolistId2',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: false,
+                    order: 0,
+                    addedDate: ''
+                },
+                {
+                    id: '2',
+                    title: 'milk',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId2',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: true,
+                    order: 0,
+                    addedDate: ''
+                },
+                {
+                    id: '3',
+                    title: 'tea',
+                    status: TaskStatuses.New,
+                    todoListId: 'todolistId2',
+                    startDate: '',
+                    priority: TaskPriorities.Low,
+                    description: '',
+                    deadline: '',
+                    completed: false,
+                    order: 0,
+                    addedDate: ''
+                }
             ]
         }
     }
@@ -28,7 +101,21 @@ describe('taskSlice test', () => {
     })
 
     it('correct task should be added to correct array', () => {
-        const action = addTask({todoId: 'todolistId2', title: 'Kimcheck'})
+        const newTask: TaskType = {
+            id: '4',
+            title: 'Kimcheck',
+            status: TaskStatuses.New,
+            todoListId: 'todolistId2',
+            startDate: '',
+            priority: TaskPriorities.Low,
+            description: '',
+            deadline: '',
+            completed: false,
+            order: 0,
+            addedDate: ''
+        }
+
+        const action = addTask(newTask)
 
         const endState = taskSlice.reducer(startState, action)
         expect(endState.tasks['todolistId2'].length).toBe(4)
@@ -43,28 +130,88 @@ describe('taskSlice test', () => {
         expect(endState).toEqual({
             tasks: {
                 ['todolistId1']: [
-                    {id: '1', title: 'CSS', isDone: false},
-                    {id: '2', title: 'JS', isDone: true},
-                    {id: '3', title: 'React', isDone: false}
+                    {
+                        id: '1',
+                        title: 'CSS',
+                        status: TaskStatuses.New,
+                        todoListId: 'todolistId1',
+                        startDate: '',
+                        priority: TaskPriorities.Low,
+                        description: '',
+                        deadline: '',
+                        completed: false,
+                        order: 0,
+                        addedDate: ''
+                    },
+                    {
+                        id: '2',
+                        title: 'JS',
+                        status: TaskStatuses.Completed,
+                        todoListId: 'todolistId1',
+                        startDate: '',
+                        priority: TaskPriorities.Low,
+                        description: '',
+                        deadline: '',
+                        completed: true,
+                        order: 0,
+                        addedDate: ''
+                    },
+                    {
+                        id: '3',
+                        title: 'React',
+                        status: TaskStatuses.New,
+                        todoListId: 'todolistId1',
+                        startDate: '',
+                        priority: TaskPriorities.Low,
+                        description: '',
+                        deadline: '',
+                        completed: false,
+                        order: 0,
+                        addedDate: ''
+                    }
                 ],
                 ['todolistId2']: [
-                    {id: '1', title: 'bread', isDone: false},
-                    {id: '3', title: 'tea', isDone: false}
+                    {
+                        id: '1',
+                        title: 'bread',
+                        status: TaskStatuses.New,
+                        todoListId: 'todolistId2',
+                        startDate: '',
+                        priority: TaskPriorities.Low,
+                        description: '',
+                        deadline: '',
+                        completed: false,
+                        order: 0,
+                        addedDate: ''
+                    },
+                    {
+                        id: '3',
+                        title: 'tea',
+                        status: TaskStatuses.New,
+                        todoListId: 'todolistId2',
+                        startDate: '',
+                        priority: TaskPriorities.Low,
+                        description: '',
+                        deadline: '',
+                        completed: false,
+                        order: 0,
+                        addedDate: ''
+                    }
                 ]
             }
         })
     })
 
     it('status of specified task should be changed', () => {
-        const action = changeTaskStatus({todoId: 'todolistId1', taskId: '2', isDone: false})
+        const action = updateTask({todoId: 'todolistId1', taskId: '2', model: {status: TaskStatuses.New}})
 
         const endState = taskSlice.reducer(startState, action)
-        expect(endState.tasks['todolistId1'][1].isDone).toBe(false)
-        expect(endState.tasks['todolistId2'][1].isDone).toBe(true)
+        expect(endState.tasks['todolistId1'][1].status).toBe(TaskStatuses.New)
+        expect(endState.tasks['todolistId2'][1].status).toBe(TaskStatuses.Completed)
     })
 
     it('title of specified task should be changed', () => {
-        const action = changeTaskTitle({todoId: 'todolistId1', taskId: '1', title: 'good test'})
+        const action = updateTask({todoId: 'todolistId1', taskId: '1', model: {title: 'good test'}})
 
         const endState = taskSlice.reducer(startState, action)
         expect(endState.tasks['todolistId1'][0].title).toBe('good test')

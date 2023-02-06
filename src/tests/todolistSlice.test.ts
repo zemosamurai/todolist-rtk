@@ -1,14 +1,14 @@
-import {todolistSlice, TodolistType} from "../reducers/todolistSlice";
+import {TodolistDomainType, todolistSlice} from "../store/reducers/todolistSlice";
 
 const {changeFiler, changeTodolistTitle} = todolistSlice.actions
 
-let startState: { todolists: TodolistType[] }
+let startState: { todolists: TodolistDomainType[] }
 beforeEach(() => {
     startState = {
         todolists: [
-            {id: 'todo1', title: 'TODO-1', filter: 'all'},
-            {id: 'todo2', title: 'TODO-2', filter: 'all'},
-            {id: 'todo3', title: 'TODO-3', filter: 'all'},
+            {id: 'todo1', title: 'TODO-1', order: 0, addedDate: '', filter: 'all'},
+            {id: 'todo2', title: 'TODO-2', order: 0, addedDate: '', filter: 'all'},
+            {id: 'todo3', title: 'TODO-3', order: 0, addedDate: '', filter: 'all'},
         ]
     }
 })
