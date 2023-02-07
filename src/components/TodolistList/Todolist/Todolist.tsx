@@ -5,8 +5,8 @@ import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import Button from '@mui/material/Button';
 import {Delete} from '@mui/icons-material'
 import IconButton from '@mui/material/IconButton'
-import {FilterValueType} from "../../../reducers/todolistSlice";
-import {TaskType} from "../../../reducers/taskSlice";
+import {FilterValueType} from "../../../store/reducers/todolistSlice";
+import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 
 type TodolistPropsType = {
     todoId: string
@@ -15,7 +15,7 @@ type TodolistPropsType = {
     tasks: TaskType[]
     removeTask: (todoId: string, taskId: string) => void
     addTask: (todoId: string, title: string) => void
-    changeTaskStatus: (todoId: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todoId: string, taskId: string, status: TaskStatuses) => void
     changeTaskTitle: (todoId: string, taskId: string, title: string) => void
     changeFiler: (todoId: string, filter: FilterValueType) => void
     removeTodoList: (todoId: string) => void
@@ -35,14 +35,14 @@ export const Todolist = memo((props: TodolistPropsType) => {
     const onRemoveTodoList = () => removeTodoList(todoId)
     const onChangeTodolistTitle = useCallback((title: string) => {
         changeTodolistTitle(todoId, title)
-    },[changeTodolistTitle, todoId])
+    }, [changeTodolistTitle, todoId])
 
     let taskFromTodo = tasks
     if (filter === 'active') {
-        taskFromTodo = taskFromTodo.filter(tl => !tl.isDone)
+        taskFromTodo = taskFromTodo.filter(tl => tl.status === TaskStatuses.New)
     }
     if (filter === 'completed') {
-        taskFromTodo = taskFromTodo.filter(tl => tl.isDone)
+        taskFromTodo = taskFromTodo.filter(tl => tl.status === TaskStatuses.Completed)
     }
 
     return (

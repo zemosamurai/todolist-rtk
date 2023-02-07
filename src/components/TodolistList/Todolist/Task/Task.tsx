@@ -2,22 +2,20 @@ import React, {ChangeEvent, memo, useCallback} from "react";
 import {EditableSpan} from "../../../EditableSpan/EditableSpan";
 import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
-import {TaskType} from "../../../../reducers/taskSlice";
+import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
 
 type TaskPropsType = {
     todoId: string
     task: TaskType
     removeTask: (todoId: string, taskId: string) => void
-    changeTaskStatus: (todoId: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todoId: string, taskId: string, status: TaskStatuses) => void
     changeTaskTitle: (todoId: string, taskId: string, title: string) => void
 }
 
 export const Task = memo(({todoId, task, removeTask, changeTaskStatus, changeTaskTitle}: TaskPropsType) => {
-    console.log('Task')
-
     const onRemoveTask = () => removeTask(todoId, task.id)
     const onChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(todoId, task.id, e.currentTarget.checked)
+        changeTaskStatus(todoId, task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
     }
     const onChangeTaskTitle = useCallback((title: string) => {
         changeTaskTitle(todoId, task.id, title)
@@ -26,7 +24,7 @@ export const Task = memo(({todoId, task, removeTask, changeTaskStatus, changeTas
     return (
         <li style={{display: 'flex', alignItems:'center'}}>
             <Checkbox
-                checked={task.isDone}
+                checked={task.status === TaskStatuses.Completed}
                 onChange={onChangeTaskStatus}
                 size={'small'}
             />
