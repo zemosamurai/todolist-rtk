@@ -1,5 +1,5 @@
-import {taskSlice, TaskStateType} from "../store/reducers/taskSlice";
-import {addTodolistAC, removeTodolistAC, TodolistDomainType, todolistSlice} from "../store/reducers/todolistSlice";
+import {taskSlice, TaskStateType} from "../store/slice/taskSlice";
+import {addTodolistAC, removeTodolistAC, TodolistDomainType, todolistSlice} from "../store/slice/todolistSlice";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 
 describe('task-todo-slice tests', () => {
@@ -7,7 +7,7 @@ describe('task-todo-slice tests', () => {
         const startTasksState: TaskStateType = {}
         const startTodolistsState: TodolistDomainType[] = []
 
-        const newTodo: TodolistDomainType = {id: 'Todo1', filter: 'all', title: 'ass', order: 0, addedDate: ''}
+        const newTodo: TodolistDomainType = {id: 'Todo1', filter: 'all', title: 'ass', order: 0, addedDate: '', entityStatus: 'idle'}
         const action = addTodolistAC(newTodo)
 
         const endTasksState = taskSlice.reducer({tasks: startTasksState}, action)
@@ -35,7 +35,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '2',
@@ -48,7 +49,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: true,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '3',
@@ -61,7 +63,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 }
             ],
             ['todolistId2']: [
@@ -76,7 +79,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '2',
@@ -89,7 +93,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: true,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '3',
@@ -102,7 +107,8 @@ describe('task-todo-slice tests', () => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 }
             ]
         }

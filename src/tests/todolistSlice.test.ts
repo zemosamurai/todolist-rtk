@@ -1,14 +1,13 @@
-import {TodolistDomainType, todolistSlice} from "../store/reducers/todolistSlice";
+import {changeTodoFilter, changeTodoTitle, TodolistDomainType, todolistSlice} from "../store/slice/todolistSlice";
 
-const {changeFiler, changeTodolistTitle} = todolistSlice.actions
 
 let startState: { todolists: TodolistDomainType[] }
 beforeEach(() => {
     startState = {
         todolists: [
-            {id: 'todo1', title: 'TODO-1', order: 0, addedDate: '', filter: 'all'},
-            {id: 'todo2', title: 'TODO-2', order: 0, addedDate: '', filter: 'all'},
-            {id: 'todo3', title: 'TODO-3', order: 0, addedDate: '', filter: 'all'},
+            {id: 'todo1', title: 'TODO-1', order: 0, addedDate: '', filter: 'all', entityStatus: 'idle'},
+            {id: 'todo2', title: 'TODO-2', order: 0, addedDate: '', filter: 'all', entityStatus: 'idle'},
+            {id: 'todo3', title: 'TODO-3', order: 0, addedDate: '', filter: 'all', entityStatus: 'idle'},
         ]
     }
 })
@@ -21,7 +20,7 @@ describe('todolistSlice test', () => {
     })
 
     it('filter of specified todolist should be changed', () => {
-        const action = changeFiler({todoId: 'todo2', filter: 'active'})
+        const action = changeTodoFilter({todoId: 'todo2', filter: 'active'})
 
         const endState = todolistSlice.reducer(startState, action)
         expect(endState.todolists[1].filter).toBe('active')
@@ -29,7 +28,7 @@ describe('todolistSlice test', () => {
     })
 
     it('title of specified todolist should be changed', () => {
-        const action = changeTodolistTitle({todoId: 'todo1', title: 'XXX-FILM(_|_)'})
+        const action = changeTodoTitle({todoId: 'todo1', title: 'XXX-FILM(_|_)'})
 
         const endState = todolistSlice.reducer(startState, action)
         expect(endState.todolists[0].title).toBe('XXX-FILM(_|_)')

@@ -1,4 +1,4 @@
-import {taskSlice, TaskStateType} from "../store/reducers/taskSlice";
+import {taskSlice, TaskStateType} from "../store/slice/taskSlice";
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
 const {addTask, removeTask, updateTask} = taskSlice.actions
@@ -19,7 +19,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '2',
@@ -32,7 +33,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: true,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '3',
@@ -45,7 +47,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 }
             ],
             ['todolistId2']: [
@@ -60,7 +63,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '2',
@@ -73,7 +77,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: true,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 },
                 {
                     id: '3',
@@ -86,7 +91,8 @@ beforeEach(() => {
                     deadline: '',
                     completed: false,
                     order: 0,
-                    addedDate: ''
+                    addedDate: '',
+                    entityStatus: 'idle'
                 }
             ]
         }
