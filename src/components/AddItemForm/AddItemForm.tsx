@@ -4,9 +4,10 @@ import Button from '@mui/material/Button';
 
 type AddItemForm = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = memo(({addItem}: AddItemForm) => {
+export const AddItemForm = memo(({addItem, disabled}: AddItemForm) => {
     const [value, setValue] = useState('')
     const [error, setError] = useState(false)
 
@@ -40,12 +41,14 @@ export const AddItemForm = memo(({addItem}: AddItemForm) => {
                 label={error ? 'enter correct value' : 'your title'}
                 color={error ? 'error' : 'primary'}
                 style={{maxWidth: '200px'}}
+                disabled={disabled}
             />
 
             <Button
                 onClick={onAddItem}
                 style={{minHeight: '40px', minWidth: '40px', maxHeight: '40px', maxWidth: '40px'}}
                 variant={'contained'}
+                disabled={disabled}
             >+</Button>
         </div>
     )
