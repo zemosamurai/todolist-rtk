@@ -5,14 +5,16 @@ import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import Button from '@mui/material/Button';
 import {Delete} from '@mui/icons-material'
 import IconButton from '@mui/material/IconButton'
-import {FilterValueType} from "../../../store/reducers/todolistSlice";
-import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {FilterValueType} from "../../../store/slice/todolistSlice";
+import {TaskStatuses} from "../../../api/todolist-api";
+import {RequestStatusType} from "../../../store/slice/appSlice";
+import {TaskDomainType} from "../../../store/slice/taskSlice";
 
 type TodolistPropsType = {
     todoId: string
     title: string
     filter: FilterValueType
-    tasks: TaskType[]
+    tasks: TaskDomainType[]
     removeTask: (todoId: string, taskId: string) => void
     addTask: (todoId: string, title: string) => void
     changeTaskStatus: (todoId: string, taskId: string, status: TaskStatuses) => void
@@ -20,12 +22,13 @@ type TodolistPropsType = {
     changeFiler: (todoId: string, filter: FilterValueType) => void
     removeTodoList: (todoId: string) => void
     changeTodolistTitle: (todoId: string, title: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const Todolist = memo((props: TodolistPropsType) => {
     const {
         todoId, title, filter, tasks, removeTask, addTask, changeTaskStatus,
-        changeTaskTitle, changeFiler, removeTodoList, changeTodolistTitle
+        changeTaskTitle, changeFiler, removeTodoList, changeTodolistTitle, entityStatus
     } = props
 
     const onAddTask = useCallback((title: string) => addTask(todoId, title), [addTask, todoId])
@@ -48,12 +51,16 @@ export const Todolist = memo((props: TodolistPropsType) => {
     return (
         <div>
             <h3 style={{marginTop: '0'}}>
-                <EditableSpan value={title} changeValue={onChangeTodolistTitle}/>
-                <IconButton onClick={onRemoveTodoList} size={'small'}>
+                <EditableSpan
+                    value={title}
+                    changeValue={onChangeTodolistTitle}
+                    disabled={entityStatus === 'loading'}
+                />
+                <IconButton onClick={onRemoveTodoList} size={'small'} disabled={entityStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={onAddTask}/>
+            <AddItemForm addItem={onAddTask} disabled={entityStatus === 'loading'}/>
             <ul>
                 {taskFromTodo?.map(t => {
                     return <Task
@@ -63,6 +70,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
                         removeTask={removeTask}
                         changeTaskStatus={changeTaskStatus}
                         changeTaskTitle={changeTaskTitle}
+                        entityStatus={t.entityStatus}
                     />
                 })}
             </ul>
