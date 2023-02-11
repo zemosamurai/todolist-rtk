@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatchType} from "../store";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/utils-error";
 import axios from "axios";
-import {authLogin, LoginDataType} from "../../api/todolist-api";
+import {authLoginAPI, LoginDataType} from "../../api/todolist-api";
 import {setIsInitialized, setLoading} from "./appSlice";
 
 const initialState: InitialStateType = {
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
 export const loginTC = (data: LoginDataType) => async (dispatch: AppDispatchType) => {
     dispatch(setLoading({status: 'loading'}))
     try {
-        const res = await authLogin.login(data)
+        const res = await authLoginAPI.login(data)
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedIn({isLoggedIn: true}))
             dispatch(setLoading({status: 'succeeded'}))
@@ -41,7 +41,7 @@ export const loginTC = (data: LoginDataType) => async (dispatch: AppDispatchType
 export const meTC = () => async (dispatch: AppDispatchType) => {
     dispatch(setLoading({status: 'loading'}))
     try {
-        const res = await authLogin.me()
+        const res = await authLoginAPI.me()
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedIn({isLoggedIn: true}))
             dispatch(setLoading({status: 'succeeded'}))
@@ -60,7 +60,7 @@ export const meTC = () => async (dispatch: AppDispatchType) => {
 export const logoutTC = () => async (dispatch: AppDispatchType) => {
     dispatch(setLoading({status: 'loading'}))
     try {
-        const res = await authLogin.logOut()
+        const res = await authLoginAPI.logOut()
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedIn({isLoggedIn: false}))
             dispatch(setLoading({status: 'succeeded'}))
