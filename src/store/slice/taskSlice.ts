@@ -23,9 +23,10 @@ export const taskSlice = createSlice({
             const removeTasks = state.tasks[action.payload.todoId].filter(el => el.id !== action.payload.taskId)
             state.tasks[action.payload.todoId] = removeTasks
         },
-        addTask: (state, action: PayloadAction<TaskType>) => {
-            const newTask: TaskDomainType = {...action.payload, entityStatus: 'idle'}
-            state.tasks[action.payload.todoListId].unshift(newTask)
+        addTask(state, action: PayloadAction<{ todoId: string, task: TaskType }>) {
+            const newTask: TaskDomainType = {...action.payload.task, entityStatus: 'idle'}
+            const previousTasks = state.tasks?.[action.payload.todoId] || []
+            state.tasks[action.payload.todoId] = [newTask, ...previousTasks]
         },
         updateTask: (state, action: PayloadAction<UpdateTaskType>) => {
             const tasks = state.tasks[action.payload.todoId]
