@@ -9,18 +9,25 @@ import LinearProgress from '@mui/material/LinearProgress';
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {RequestStatusType} from "../../store/slice/appSlice";
 import {logoutTC} from "../../store/slice/authSlice";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import {useTheme} from "@mui/material/styles";
+import {ColorModeContext} from "../../features/ColorModeContext/ColorModeContext";
 
 export const AppBarHeader = () => {
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
+    const theme = useTheme();
+    const colorMode = React.useContext(ColorModeContext);
+
 
     const logOutHandler = () => {
         dispatch(logoutTC())
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" component="nav">
             <Toolbar>
                 <IconButton
                     size="large"
@@ -31,9 +38,16 @@ export const AppBarHeader = () => {
                 >
                     <MenuIcon/>
                 </IconButton>
+
+
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     News
                 </Typography>
+
+                <IconButton sx={{mr: 2}} onClick={colorMode.toggleColorMode} color="inherit">
+                    {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
+                </IconButton>
+
                 {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log Out</Button>}
             </Toolbar>
             {status === 'loading' && <LinearProgress color="success"/>}
