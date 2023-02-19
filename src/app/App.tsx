@@ -9,6 +9,8 @@ import {Login} from "../features/Login/Login";
 import {meTC} from "../store/slice/authSlice";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import CircularProgress from "@mui/material/CircularProgress";
+import {CssBaseline} from "@mui/material";
+
 
 function App() {
     const dispatch = useAppDispatch()
@@ -27,6 +29,7 @@ function App() {
 
     return (
         <div className="App">
+            <CssBaseline/>
             <ErrorSnackbar/>
             <AppBarHeader/>
             <Container fixed>
