@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {AppBarHeader} from "../components/AppBar/AppBar";
 import Container from "@mui/material/Container";
-import {TodolistList} from "../components/TodolistList/TodolistList";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
@@ -10,6 +9,7 @@ import {meTC} from "../store/slice/authSlice";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import {CssBaseline} from "@mui/material";
+import {TodolistList} from "../features/TodolistList/TodolistList";
 
 
 function App() {

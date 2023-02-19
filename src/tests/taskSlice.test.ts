@@ -121,7 +121,7 @@ describe('taskSlice test', () => {
             addedDate: ''
         }
 
-        const action = addTask(newTask)
+        const action = addTask({todoId: 'todolistId2' ,task: newTask})
 
         const endState = taskSlice.reducer(startState, action)
         expect(endState.tasks['todolistId2'].length).toBe(4)
@@ -147,7 +147,8 @@ describe('taskSlice test', () => {
                         deadline: '',
                         completed: false,
                         order: 0,
-                        addedDate: ''
+                        addedDate: '',
+                        entityStatus: 'idle'
                     },
                     {
                         id: '2',
@@ -160,7 +161,8 @@ describe('taskSlice test', () => {
                         deadline: '',
                         completed: true,
                         order: 0,
-                        addedDate: ''
+                        addedDate: '',
+                        entityStatus: 'idle'
                     },
                     {
                         id: '3',
@@ -173,7 +175,8 @@ describe('taskSlice test', () => {
                         deadline: '',
                         completed: false,
                         order: 0,
-                        addedDate: ''
+                        addedDate: '',
+                        entityStatus: 'idle'
                     }
                 ],
                 ['todolistId2']: [
@@ -188,7 +191,8 @@ describe('taskSlice test', () => {
                         deadline: '',
                         completed: false,
                         order: 0,
-                        addedDate: ''
+                        addedDate: '',
+                        entityStatus: 'idle'
                     },
                     {
                         id: '3',
@@ -201,7 +205,8 @@ describe('taskSlice test', () => {
                         deadline: '',
                         completed: false,
                         order: 0,
-                        addedDate: ''
+                        addedDate: '',
+                        entityStatus: 'idle'
                     }
                 ]
             }

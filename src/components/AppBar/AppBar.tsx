@@ -50,7 +50,10 @@ export const AppBarHeader = () => {
 
                 {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log Out</Button>}
             </Toolbar>
-            {status === 'loading' && <LinearProgress color="success"/>}
+            {status === 'loading' &&
+                <LinearProgress color="success"
+                    sx={{position: 'fixed', width: '100%', top: '0', left: '0'}}
+                />}
         </AppBar>
     );
 }

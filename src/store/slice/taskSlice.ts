@@ -66,14 +66,15 @@ export const fetchTasksTC = createAsyncThunk<unknown, string, AsyncThunkConfig>(
         }
     })
 
+
 export const addTasksTC = createAsyncThunk<unknown, { todoId: string, title: string }, AsyncThunkConfig>(
-    'tasks/addTasksTC',
+    'tasks/addTaskTC',
     async (payload, {dispatch}) => {
         dispatch(setLoading({status: 'loading'}))
         try {
             const res = await todolistApi.createTask(payload.todoId, payload.title)
             if (res.data.resultCode === 0) {
-                dispatch(addTask(res.data.data.item))
+                dispatch(addTask({todoId: payload.todoId, task: res.data.data.item}))
                 dispatch(setLoading({status: 'succeeded'}))
             } else {
                 handleServerAppError(dispatch, res.data)
@@ -82,6 +83,7 @@ export const addTasksTC = createAsyncThunk<unknown, { todoId: string, title: str
             if (axios.isAxiosError<{ error: string }>(e)) {
                 const error = e.response?.data ? e.response.data.error : e.message
                 handleServerNetworkError(dispatch, error)
+                dispatch(setLoading({status: 'failed'}))
             }
         }
     })
