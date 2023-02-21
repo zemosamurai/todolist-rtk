@@ -43,10 +43,10 @@ export const Todolist = memo(({todoId, title, filter, tasks, entityStatus}: Todo
     let taskFromTodo = tasks
 
     if (filter === 'active') {
-        taskFromTodo = taskFromTodo.filter(tl => tl.status === TaskStatuses.New)
+        taskFromTodo = taskFromTodo?.filter(tl => tl.status === TaskStatuses.New)
     }
     if (filter === 'completed') {
-        taskFromTodo = taskFromTodo.filter(tl => tl.status === TaskStatuses.Completed)
+        taskFromTodo = taskFromTodo?.filter(tl => tl.status === TaskStatuses.Completed)
     }
 
     return (

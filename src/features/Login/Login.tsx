@@ -74,6 +74,7 @@ export const Login = () => {
                         <TextField
                             type="password"
                             label="Password"
+                            autoComplete="on"
                             margin="normal"
                             {...formik.getFieldProps('password')}
                         />

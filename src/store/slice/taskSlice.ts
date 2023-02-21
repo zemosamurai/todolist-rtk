@@ -14,14 +14,15 @@ export const taskSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        setTasks: (state, action: PayloadAction<TaskType[]>) => {
-            action.payload.forEach(el => {
-                state.tasks[el.todoListId] = action.payload.map(el => ({...el, entityStatus: 'idle'}))
-            })
+        setTasks: (state, action: PayloadAction<{todoId: string, tasks: TaskType[]}>) => {
+            state.tasks[action.payload.todoId] = action.payload.tasks.map(el => ({...el, entityStatus: 'idle'}))
         },
         removeTask: (state, action: PayloadAction<RemoveTaskType>) => {
-            const removeTasks = state.tasks[action.payload.todoId].filter(el => el.id !== action.payload.taskId)
-            state.tasks[action.payload.todoId] = removeTasks
+            const task = state.tasks[action.payload.todoId]
+            const index = task.findIndex(el => el.id === action.payload.taskId)
+            if (index > -1) {
+                task.splice(index, 1)
+            }
         },
         addTask(state, action: PayloadAction<{ todoId: string, task: TaskType }>) {
             const newTask: TaskDomainType = {...action.payload.task, entityStatus: 'idle'}
@@ -30,8 +31,10 @@ export const taskSlice = createSlice({
         },
         updateTask: (state, action: PayloadAction<UpdateTaskType>) => {
             const tasks = state.tasks[action.payload.todoId]
-            const tasksUpdate = tasks.map(el => el.id === action.payload.taskId ? {...el, ...action.payload.model} : el)
-            state.tasks[action.payload.todoId] = tasksUpdate
+            const index = tasks.findIndex(el => el.id === action.payload.taskId)
+            if (index > -1) {
+                tasks[index] = {...tasks[index], ...action.payload.model}
+            }
         },
         setTaskEntityStatus: (state, action: PayloadAction<SetTaskEntityStatusType>) => {
             state.tasks[action.payload.todoId].forEach(el =>
@@ -56,7 +59,7 @@ export const fetchTasksTC = createAsyncThunk<unknown, string, AsyncThunkConfig>(
         dispatch(setLoading({status: 'loading'}))
         try {
             const res = await todolistApi.getTasks(todoId)
-            dispatch(setTasks(res.data.items))
+            dispatch(setTasks({todoId, tasks: res.data.items}))
             dispatch(setLoading({status: 'succeeded'}))
         } catch (e) {
             if (axios.isAxiosError<{ error: string }>(e)) {
