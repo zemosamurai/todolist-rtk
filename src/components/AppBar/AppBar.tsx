@@ -13,6 +13,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import {useTheme} from "@mui/material/styles";
 import {ColorModeContext} from "../../features/ColorModeContext/ColorModeContext";
+import {SideBar} from "../SideBar/SideBar";
 
 export const AppBarHeader = () => {
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
@@ -21,6 +22,11 @@ export const AppBarHeader = () => {
     const theme = useTheme();
     const colorMode = React.useContext(ColorModeContext);
 
+    const [isActive, setIsActive] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+        setIsActive((prevState) => !prevState);
+    };
 
     const logOutHandler = () => {
         dispatch(logoutTC())
@@ -31,14 +37,14 @@ export const AppBarHeader = () => {
             <Toolbar>
                 <IconButton
                     size="large"
-                    edge="start"
                     color="inherit"
-                    aria-label="menu"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
                     sx={{mr: 2}}
                 >
                     <MenuIcon/>
                 </IconButton>
-
 
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     News
@@ -49,11 +55,11 @@ export const AppBarHeader = () => {
                 </IconButton>
 
                 {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log Out</Button>}
+
+                <SideBar isActive={isActive} handleDrawerToggle={handleDrawerToggle}/>
             </Toolbar>
             {status === 'loading' &&
-                <LinearProgress color="success"
-                    sx={{position: 'fixed', width: '100%', top: '0', left: '0'}}
-                />}
+                <LinearProgress color="success" sx={{position: 'fixed', width: '100%', top: '0', left: '0'}}/>}
         </AppBar>
     );
 }
