@@ -31,14 +31,13 @@ export const TodolistList = () => {
 
     return <>
         <Grid container sx={{margin: '30px 0'}}>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolist} description={'add todo'}/>
         </Grid>
-        <Grid container maxWidth={'lg'}  sx={{marginBottom: '30px'}} spacing={4}
-        >
+        <Grid container maxWidth={'lg'} sx={{marginBottom: '30px'}} spacing={4}>
             {todolists.map(tl => {
                 const taskFromTodo = tasks[tl.id]
                 return <Grid item key={tl.id} xs={12} sm={6} md={4}>
-                    <Paper style={{padding: '25px'}} elevation={2}>
+                    <Paper style={{padding: '25px',}} elevation={2}>
                         <Todolist
                             todoId={tl.id}
                             title={tl.title}

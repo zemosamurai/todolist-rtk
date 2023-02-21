@@ -1,13 +1,16 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import s from './AddItemForm.module.css'
 
 type AddItemForm = {
     addItem: (title: string) => void
     disabled?: boolean
+    description: string
 }
 
-export const AddItemForm = memo(({addItem, disabled}: AddItemForm) => {
+export const AddItemForm = memo(({addItem, disabled, description}: AddItemForm) => {
     const [value, setValue] = useState('')
     const [error, setError] = useState(false)
 
@@ -32,24 +35,24 @@ export const AddItemForm = memo(({addItem, disabled}: AddItemForm) => {
     }
 
     return (
-        <div>
+        <Box className={s.formWrapper}>
             <TextField
                 value={value}
                 onChange={onChangeHandler}
                 onKeyDown={onEnterAddTask}
                 size={'small'}
-                label={error ? 'enter correct value' : 'your title'}
+                label={error ? 'enter correct value' : `${description}`}
                 color={error ? 'error' : 'primary'}
-                style={{maxWidth: '200px'}}
+                className={s.inputSuper}
                 disabled={disabled}
             />
 
             <Button
                 onClick={onAddItem}
-                style={{minHeight: '40px', minWidth: '40px', maxHeight: '40px', maxWidth: '40px'}}
+                // className={s.buttonSuper}
                 variant={'contained'}
                 disabled={disabled}
             >+</Button>
-        </div>
+        </Box>
     )
 })

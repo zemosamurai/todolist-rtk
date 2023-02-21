@@ -6,6 +6,7 @@ import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
 import {RequestStatusType} from "../../../../store/slice/appSlice";
 import {useAppDispatch} from "../../../../store/hooks";
 import {deleteTaskTC, updateTaskTC} from "../../../../store/slice/taskSlice";
+import Box from "@mui/material/Box";
 
 type TaskPropsType = {
     todoId: string
@@ -26,7 +27,7 @@ export const Task = memo(({todoId, task, entityStatus}: TaskPropsType) => {
     }, [todoId, task.id])
 
     return (
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <Box style={{display: 'flex', alignItems: 'center'}}>
             <Checkbox
                 checked={task.status === TaskStatuses.Completed}
                 onChange={changeTaskStatus}
@@ -34,9 +35,18 @@ export const Task = memo(({todoId, task, entityStatus}: TaskPropsType) => {
                 disabled={entityStatus === 'loading'}
                 color={'success'}
             />
-            <EditableSpan value={task.title} changeValue={changeTaskTitle} disabled={entityStatus === 'loading'}/>
-            <Button size={'small'} color={'error'} onClick={onRemoveTask}
-                    disabled={entityStatus === 'loading'}>x</Button>
-        </div>
+
+            <EditableSpan
+                value={task.title}
+                changeValue={changeTaskTitle}
+                disabled={entityStatus === 'loading'}
+            />
+
+            <Button
+                size={'small'} color={'error'}
+                onClick={onRemoveTask}
+                disabled={entityStatus === 'loading'}
+            >x</Button>
+        </Box>
     )
 })

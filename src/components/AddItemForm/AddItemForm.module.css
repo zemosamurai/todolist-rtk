@@ -1,0 +1,15 @@
+.formWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonSuper {
+    min-height: 40px;
+    min-width: 40px;
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.inputSuper {
+    width: 100%;
+}

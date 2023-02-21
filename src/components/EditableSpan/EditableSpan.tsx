@@ -1,13 +1,15 @@
 import React, {ChangeEvent, memo, useState} from "react";
 import TextField from '@mui/material/TextField';
+import Typography from "@mui/material/Typography";
 
 type EditableSpan = {
     value: string
+    variant?: "caption" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
     changeValue: (value: string) => void
     disabled?: boolean
 }
 
-export const EditableSpan = memo(({value, changeValue, disabled}: EditableSpan) => {
+export const EditableSpan = memo(({value, changeValue, disabled, variant}: EditableSpan) => {
     const [editMode, setEditMode] = useState(false)
     const [title, setValue] = useState(value)
 
@@ -34,5 +36,5 @@ export const EditableSpan = memo(({value, changeValue, disabled}: EditableSpan) 
             size={'small'}
             autoFocus/>
 
-        : <span onDoubleClick={onEditMode}>{value}</span>
+        : <Typography variant={variant} onDoubleClick={onEditMode}>{value}</Typography>
 })

@@ -15,6 +15,8 @@ import {TaskStatuses} from "../../../api/todolist-api";
 import {RequestStatusType} from "../../../store/slice/appSlice";
 import {addTasksTC, TaskDomainType} from "../../../store/slice/taskSlice";
 import {useAppDispatch} from "../../../store/hooks";
+import s from './Todolist.module.css'
+import Box from "@mui/material/Box";
 
 type TodolistPropsType = {
     todoId: string
@@ -41,7 +43,6 @@ export const Todolist = memo(({todoId, title, filter, tasks, entityStatus}: Todo
     }, [todoId])
 
     let taskFromTodo = tasks
-
     if (filter === 'active') {
         taskFromTodo = taskFromTodo?.filter(tl => tl.status === TaskStatuses.New)
     }
@@ -50,19 +51,26 @@ export const Todolist = memo(({todoId, title, filter, tasks, entityStatus}: Todo
     }
 
     return (
-        <div>
-            <h3 style={{marginTop: '0'}}>
+        <Box className={s.todoWrapper}>
+            <Box className={s.titleWrapper}>
                 <EditableSpan
                     value={title}
+                    variant={'h6'}
                     changeValue={changeTodolistTitle}
                     disabled={entityStatus === 'loading'}
                 />
                 <IconButton onClick={removeTodoList} size={'small'} disabled={entityStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
-            </h3>
-            <AddItemForm addItem={addTask} disabled={entityStatus === 'loading'}/>
-            <div style={{margin: '15px 0'}}>
+            </Box>
+
+            <AddItemForm
+                addItem={addTask}
+                disabled={entityStatus === 'loading'}
+                description={'add task'}
+            />
+
+            <Box style={{margin: '15px 0'}}>
                 {taskFromTodo?.map(t => {
                     return <Task
                         key={t.id}
@@ -71,29 +79,27 @@ export const Todolist = memo(({todoId, title, filter, tasks, entityStatus}: Todo
                         entityStatus={t.entityStatus}
                     />
                 })}
-            </div>
-            <div>
+            </Box>
 
+            <Box style={{display: 'flex'}}>
                 <Button
                     onClick={() => changeFiler('all')}
                     variant={filter === 'all' ? 'contained' : 'outlined'}
-                    size={'small'}
+                    size={'large'}
                 >All</Button>
-
                 <Button
                     onClick={() => changeFiler('active')}
                     variant={filter === 'active' ? 'contained' : 'outlined'}
                     color={'warning'}
-                    size={'small'}
+                    size={'large'}
                 >Active</Button>
-
                 <Button
                     onClick={() => changeFiler('completed')}
                     variant={filter === 'completed' ? 'contained' : 'outlined'}
                     color={'success'}
-                    size={'small'}
+                    size={'large'}
                 >Completed</Button>
-            </div>
-        </div>
+            </Box>
+        </Box>
     )
 })
